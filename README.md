@@ -21,9 +21,9 @@ Please notice the 3 parameters `-f` `-p` `-n` they all *required*
 Assume our input file is `pricelist.csv` and store in the same directory as our `pricelist.py` file.
 ### Input File
 ```csv
-sku,price
-PRODUCT1,5.99
-PRODUCT2,10.99
+sku,price,discount
+PRODUCT1,5.99,0
+PRODUCT2,10.99,10.55
 ```
 
 ### Run Script
@@ -39,14 +39,20 @@ PRODUCT2,10.99
                 <QtyStart>1</QtyStart>
                 <QtyEnd>99999</QtyEnd>
                 <AmountValue>5.99</AmountValue>
+                <DiscountValue>0</DiscountValue>
             </StockItem>
             <StockItem>
                 <StockCode>PRODUCT2</StockCode>
                 <QtyStart>1</QtyStart>
                 <QtyEnd>99999</QtyEnd>
                 <AmountValue>10.99</AmountValue>
+                <DiscountValue>10.55</DiscountValue>
             </StockItem>
         </StockItem-CustomerClassifications>
     </StockItem-CustomerClassificationsList>
 </PriceLists>
 ```
+
+## Info
+###Discount
+The discount column of the csv file is the percent discount as an integer. The maximum value is 99.99% and the lowest value is 0%, anything above to below these values will be amended to 0. By default all discounts will be truncated to 2dp, this can be amended by changing the `discountDecimals` property.

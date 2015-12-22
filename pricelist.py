@@ -3,6 +3,7 @@ import sys, getopt, csv
 
 class PriceList:
 
+	discountDecimals=2
 	outputfile='pricelist.xml' #Outputted file name
 	param_file='' #-f
 	param_name='' #-p
@@ -32,7 +33,7 @@ class PriceList:
 		with open(self.param_file, 'rb') as csvfile:
 			pricelistcsv = csv.DictReader(csvfile, delimiter=',', quotechar='|')
 			for row in pricelistcsv:
-				self.addStockItem(pricelist, row["sku"], row["price"])
+				self.addStockItem(pricelist, row["sku"], row["price"], row["discount"])
 		self.output()
 
 
@@ -47,12 +48,24 @@ class PriceList:
 		pricelist = ET.SubElement(pricelists, "StockItem-CustomerClassifications", PriceListNet=self.param_net, CompClass=self.param_name)
 		self.loadCsv(pricelist)
 
-	def addStockItem(self, pricelist, sku, price):
+	def addStockItem(self, pricelist, sku, price, discount):
 		stockitem = ET.SubElement(pricelist, "StockItem")
 		ET.SubElement(stockitem, "StockCode").text = sku
 		ET.SubElement(stockitem, "QtyStart").text = '1'
 		ET.SubElement(stockitem, "QtyEnd").text = '99999'
 		ET.SubElement(stockitem, "AmountValue").text = price
+		if not discount:
+			ET.SubElement(stockitem, "DiscountValue").text = '0'
+		else:
+			discountRounded = round(float(discount), self.discountDecimals)
+			if(discountRounded >= 100):
+				print(sku + ' discount is ' + str(discountRounded) + '(over 100%), ignored and set to 0.')
+				ET.SubElement(stockitem, "DiscountValue").text = '0'
+			elif(discountRounded < 0):
+				print(sku + ' discount is ' + str(discountRounded) + '(under 0%), ignored and set to 0.')
+				ET.SubElement(stockitem, "DiscountValue").text = '0'
+			else:
+				ET.SubElement(stockitem, "DiscountValue").text = str(discountRounded)
 
 	def output(self):
 		print('Outputting to ' + self.outputfile + '...')
