@@ -4,7 +4,7 @@ from xml.etree import ElementTree as ET
 
 class combine:
 
-	outputfile = '' #Output file (include '.xml')
+	outputfile = '' #Output file (include '.xml') 
 	folder = '' #Folder(relative to path) containing pricelists to be combined in to single file
 
 	def basexml(self):
