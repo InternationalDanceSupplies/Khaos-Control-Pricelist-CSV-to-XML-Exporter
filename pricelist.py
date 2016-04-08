@@ -4,7 +4,7 @@ import sys, getopt, csv
 class PriceList:
 
 	discountDecimals=2
-	outputfile='pricelist.xml' #Outputted file name
+	#outputfile='pricelist.xml' #Outputted file name
 	param_file='' #-f
 	param_name='' #-p
 	param_net=''  #-n
@@ -31,13 +31,10 @@ class PriceList:
 		print 'Loading ' + self.param_file + '...'
 		import csv
 		with open(self.param_file, 'rb') as csvfile:
-			pricelistcsv = csv.DictReader(csvfile, delimiter=',', quotechar='|')
+			pricelistcsv = csv.DictReader(csvfile, delimiter=',', quotechar='"')
 			for row in pricelistcsv:
 				self.addStockItem(pricelist, row["sku"], row["price"], row["discount"])
 		self.output()
-
-
-
 
 	def baseXml(self):
 		self.xml_root = ET.Element("PriceLists")
@@ -68,6 +65,7 @@ class PriceList:
 				ET.SubElement(stockitem, "DiscountValue").text = str(discountRounded)
 
 	def output(self):
+		self.outputfile = self.param_name + '.xml'
 		print('Outputting to ' + self.outputfile + '...')
 		#print ET.tostring(self.xml_root, pretty_print=True) #Use this to output to console
 		#self.xml_root.write("pricelist.xml")
