@@ -3,7 +3,7 @@ This script allows you to take a CSV file and convert it to an XML format that i
 
 ## Requirements
 
-* Python 2.7.* 
+* Python 2.7.*
 
 ## Getting Started
 
@@ -15,15 +15,15 @@ Please notice the 3 parameters `-f` `-p` `-n` they all *required*
 
 * `-f` Defines your pricelist csv file, it must be a `.csv` file and this must related to it's path. It must only contain 2 columns with the headers `sku` and `price`.
 * `-p` Defines the name of the pricelist, this will be what appears or it writes over within Khaos Control.
-* `-n` Defines if the pricelist values given are net or gross. Boolean value of `1` or `0` must be given. 
+* `-n` Defines if the pricelist values given are net or gross. Boolean value of `1` or `0` must be given.
 
 ## Example
 Assume our input file is `pricelist.csv` and store in the same directory as our `pricelist.py` file.
 ### Input File
 ```csv
-sku,price,discount
-PRODUCT1,5.99,0
-PRODUCT2,10.99,10.55
+id,sku,price,discount
+0001,PRODUCT1,5.99,0
+0002,PRODUCT2,10.99,10.55
 ```
 
 ### Run Script
@@ -35,6 +35,7 @@ PRODUCT2,10.99,10.55
     <StockItem-CustomerClassificationsList>
         <StockItem-CustomerClassifications CompClass="MyExamplePricelist" PriceListNet="0">
             <StockItem>
+                <StockID>0001</StockID>
                 <StockCode>PRODUCT1</StockCode>
                 <QtyStart>1</QtyStart>
                 <QtyEnd>99999</QtyEnd>
@@ -42,6 +43,7 @@ PRODUCT2,10.99,10.55
                 <DiscountValue>0</DiscountValue>
             </StockItem>
             <StockItem>
+                <StockID>0002</StockID>
                 <StockCode>PRODUCT2</StockCode>
                 <QtyStart>1</QtyStart>
                 <QtyEnd>99999</QtyEnd>

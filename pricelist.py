@@ -33,7 +33,7 @@ class PriceList:
 		with open(self.param_file, 'rb') as csvfile:
 			pricelistcsv = csv.DictReader(csvfile, delimiter=',', quotechar='"')
 			for row in pricelistcsv:
-				self.addStockItem(pricelist, row["sku"], row["price"], row["discount"])
+				self.addStockItem(pricelist, row["sku"], row["price"], row["discount"], row["id"])
 		self.output()
 
 	def baseXml(self):
@@ -45,8 +45,9 @@ class PriceList:
 		pricelist = ET.SubElement(pricelists, "StockItem-CustomerClassifications", PriceListNet=self.param_net, CompClass=self.param_name)
 		self.loadCsv(pricelist)
 
-	def addStockItem(self, pricelist, sku, price, discount):
+	def addStockItem(self, pricelist, sku, price, discount, id):
 		stockitem = ET.SubElement(pricelist, "StockItem")
+		ET.SubElement(stockitem, "StockID").text = id
 		ET.SubElement(stockitem, "StockCode").text = sku
 		ET.SubElement(stockitem, "QtyStart").text = '1'
 		ET.SubElement(stockitem, "QtyEnd").text = '99999'
@@ -64,6 +65,7 @@ class PriceList:
 			else:
 				ET.SubElement(stockitem, "DiscountValue").text = str(discountRounded)
 
+
 	def output(self):
 		self.outputfile = self.param_name + '.xml'
 		print('Outputting to ' + self.outputfile + '...')
@@ -79,4 +81,3 @@ test = PriceList()
 test.loadParams()
 #test.baseXml()
 #test.output()
-
