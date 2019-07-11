@@ -56,5 +56,7 @@ id,sku,price,discount
 ```
 
 ## Info
-###Discount
+
+### Discount
+
 The discount column of the csv file is the percent discount as an integer. The maximum value is 99.99% and the lowest value is 0%, anything above to below these values will be amended to 0. By default all discounts will be truncated to 2dp, this can be amended by changing the `discountDecimals` property.
